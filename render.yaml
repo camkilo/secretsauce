@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: arena-survival-game
+    env: static
+    branch: webgl-build
+    buildCommand: echo "Using pre-built WebGL files"
+    staticPublishPath: ./Build/WebGL/WebGL
+    
+    # Headers for WebAssembly and game assets
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=3600
+      
+      - path: /Build/WebGL/WebGL/*.wasm
+        name: Content-Type
+        value: application/wasm
+      
+      - path: /Build/WebGL/WebGL/*.data
+        name: Content-Type
+        value: application/octet-stream
+      
+      - path: /Build/WebGL/WebGL/*.js
+        name: Content-Type
+        value: application/javascript
+      
+      - path: /Build/WebGL/WebGL/*.framework.js
+        name: Content-Type
+        value: application/javascript
+      
+      # Enable gzip compression for text-based files
+      - path: /Build/WebGL/WebGL/*.js
+        name: Content-Encoding
+        value: gzip
+    
+    # Routes for SPA behavior
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    
+    # Environment settings
+    envVars:
+      - key: NODE_ENV
+        value: production
