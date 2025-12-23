@@ -12,26 +12,21 @@ services:
         name: Cache-Control
         value: public, max-age=3600
       
-      - path: /Build/WebGL/WebGL/*.wasm
+      - path: /*.wasm
         name: Content-Type
         value: application/wasm
       
-      - path: /Build/WebGL/WebGL/*.data
+      - path: /*.data
         name: Content-Type
         value: application/octet-stream
       
-      - path: /Build/WebGL/WebGL/*.js
+      - path: /*.js
         name: Content-Type
         value: application/javascript
       
-      - path: /Build/WebGL/WebGL/*.framework.js
+      - path: /*.framework.js
         name: Content-Type
         value: application/javascript
-      
-      # Enable gzip compression for text-based files
-      - path: /Build/WebGL/WebGL/*.js
-        name: Content-Encoding
-        value: gzip
     
     # Routes for SPA behavior
     routes:
