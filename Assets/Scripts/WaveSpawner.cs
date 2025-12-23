@@ -91,6 +91,7 @@ public class WaveSpawner : MonoBehaviour
         );
 
         GameObject enemy;
+        EnemyController.EnemyType enemyType = GetRandomEnemyType();
         
         if (enemyPrefab != null)
         {
@@ -105,11 +106,11 @@ public class WaveSpawner : MonoBehaviour
             enemy.AddComponent<EnemyController>();
         }
 
-        // Assign enemy type based on wave progression and randomness
+        // Assign enemy type - optimization: could be set during instantiation if using prefab variants
         EnemyController controller = enemy.GetComponent<EnemyController>();
         if (controller != null)
         {
-            controller.SetEnemyType(GetRandomEnemyType());
+            controller.SetEnemyType(enemyType);
         }
 
         spawnedEnemies.Add(enemy);

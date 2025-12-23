@@ -184,12 +184,28 @@ public class EnemyController : MonoBehaviour
         {
             // Create a simple projectile if prefab is missing
             GameObject proj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            proj.name = "EnemyProjectile";
+            proj.tag = "Projectile";
             proj.transform.position = spawnPosition;
             proj.transform.localScale = Vector3.one * 0.3f;
-            Rigidbody rb = proj.AddComponent<Rigidbody>();
-            rb.useGravity = false;
-            rb.velocity = direction * projectileSpeed;
             
+            // Setup physics
+            Rigidbody rb = proj.GetComponent<Rigidbody>();
+            if (rb == null)
+            {
+                rb = proj.AddComponent<Rigidbody>();
+            }
+            rb.useGravity = false;
+            rb.isKinematic = true;
+            
+            // Setup collider as trigger
+            Collider col = proj.GetComponent<Collider>();
+            if (col != null)
+            {
+                col.isTrigger = true;
+            }
+            
+            // Add projectile script
             Projectile projScript = proj.AddComponent<Projectile>();
             projScript.Initialize(direction, projectileSpeed, attackDamage);
             

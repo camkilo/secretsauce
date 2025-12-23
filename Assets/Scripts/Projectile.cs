@@ -16,6 +16,19 @@ public class Projectile : MonoBehaviour
         speed = spd;
         damage = dmg;
         initialized = true;
+        
+        // Ensure proper collision detection
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true; // We control movement manually
+        }
+        
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+        {
+            col.isTrigger = true; // Enable trigger events
+        }
     }
 
     void Update()

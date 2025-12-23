@@ -5,8 +5,9 @@
 ### Method 1: Using Auto-Setup Script (Recommended)
 
 1. **Open Unity Project**
+   - Clone the repository or download the source code
    - Open Unity Hub
-   - Add project from cloned repository folder
+   - Add project from the repository folder
    - Open with Unity 2022.3.10f1+
 
 2. **Create New Scene**

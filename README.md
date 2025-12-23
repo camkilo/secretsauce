@@ -40,7 +40,7 @@ A third-person 3D arena survival game built in Unity, set in a circular stone ch
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/camkilo/secretsauce.git
+   git clone <repository-url>
    cd secretsauce
    ```
 
