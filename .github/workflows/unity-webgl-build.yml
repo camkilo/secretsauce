@@ -1,0 +1,78 @@
+name: Unity WebGL Build
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build WebGL
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # Required to push to webgl-build branch
+      actions: read    # Required to read workflow artifacts
+    
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      # Cache Unity Library folder
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-WebGL-
+            Library-
+
+      # Build Unity WebGL
+      - name: Build Unity WebGL
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+          unityVersion: 2022.3.10f1
+          buildName: WebGL
+          buildsPath: Build
+
+      # Commit and push to webgl-build branch
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+
+      - name: Commit WebGL Build
+        run: |
+          # Create or checkout webgl-build branch
+          git fetch origin webgl-build || true
+          git checkout -B webgl-build
+          
+          # Remove all files except Build directory and deployment configs
+          git rm -rf --cached . || true
+          git add -f Build/WebGL/
+          git add -f render.yaml vercel.json || true
+          
+          # Commit changes
+          git commit -m "WebGL build from commit ${{ github.sha }}" || echo "No changes to commit"
+          
+          # Push to webgl-build branch
+          git push -f origin webgl-build
+
+      # Upload build artifacts for manual download
+      - name: Upload WebGL Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: WebGL-Build
+          path: Build/WebGL
+          retention-days: 14

@@ -53,6 +53,9 @@ sysinfo.txt
 *.unitypackage
 *.app
 
+# Note: Build/ folder is excluded on main branch
+# WebGL builds are committed to the webgl-build branch for deployment
+
 # Crashlytics generated file
 crashlytics-build.properties
 
