@@ -23,10 +23,6 @@ services:
       - path: /*.js
         name: Content-Type
         value: application/javascript
-      
-      - path: /*.framework.js
-        name: Content-Type
-        value: application/javascript
     
     # Routes for SPA behavior
     routes:
