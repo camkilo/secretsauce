@@ -11,6 +11,10 @@ jobs:
     name: Build WebGL
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write  # Required to push to webgl-build branch
+      actions: read    # Required to read workflow artifacts
+    
     steps:
       # Checkout repository
       - name: Checkout repository
